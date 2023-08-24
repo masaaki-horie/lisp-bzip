@@ -1,0 +1,24 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp(ql:quickload '(:my-compress) :silent t)
+  )
+
+(defpackage :ros.script.my-compress.3901778003
+  (:use :cl))
+(in-package :ros.script.my-compress.3901778003)
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (if (eq (car argv) "-d")
+      (let ((compressed-file-name (cdar argv)))
+        (my-compress:decompress compressed-file-name))
+      (let ((compress-target (car argv)))
+        (my-compress:compress compress-target)))
+  0
+  )
+;;; vim: set ft=lisp lisp:
